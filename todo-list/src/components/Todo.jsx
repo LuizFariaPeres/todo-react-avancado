@@ -1,15 +1,20 @@
-import {useState } from "react"
+import {useContext, useState } from "react"
 import Tarefa from "./Tarefa"
 import useInput from "../hooks/useInput"
 import Search from "./Search"
+import { UseContext } from "../Context/UseContext";
 
 export default function Todo (){
 
 
-  const[list, setList] = useState([])
+  const[list, setList] = useState([]);
   const[busca, setBusca] = useState('');
   const tarefa = useInput();
-  const categoria = useInput()
+  const categoria = useInput("Estudos")
+  const{user} = useContext(UseContext)
+
+  const termo = busca.toLowerCase().trim();
+  
 
   
   const handleSubmit = (e) =>
@@ -35,10 +40,18 @@ export default function Todo (){
       setList(prev => prev.filter((_, index) => index !== indexRemove))
     }
 
+    const listaFiltrada = list.filter((i) =>{
+        return(
+
+          i.text.toLowerCase().includes(busca.toLowerCase(termo)) || i.category.toLowerCase(termo).includes(busca.toLowerCase())
+        )
+
+    })
+
 
   return(
     <div className="flex flex-col w-full h-dvh p-6 content-center justify-center items-center">
-        <h1 className="text-3xl font-bold underline">Hellow World</h1>
+        <h1 className="text-3xl font-bold">Hellow, {user.name}!</h1>
         <Search busca={busca} setBusca={setBusca}/>
         
           <form className="flex flex-rowl m-2 gap-6 p-5 border-solid border-black border-2 rounded-full" onSubmit={handleSubmit}>
@@ -58,7 +71,7 @@ export default function Todo (){
 
         <div className=" relative flex justify-center p-4 w-96 h-80 border-solid border-2 border-black rounded-b-lg overflow-y-auto">
           <ul className="h-full">
-            {list.map((item, index) =>(
+            {listaFiltrada.map((item, index) =>(
               <Tarefa key={index} text={item.text} category={item.category} onDelete={()=> remove(index)}/>
             ))}
           </ul>
