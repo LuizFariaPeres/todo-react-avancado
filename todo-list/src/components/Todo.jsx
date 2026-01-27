@@ -10,8 +10,9 @@ export default function Todo (){
   const[list, setList] = useState([]);
   const[busca, setBusca] = useState('');
   const tarefa = useInput();
-  const categoria = useInput("");
+  const categoria = useInput("Estudos");
   const{user} = useContext(UseContext)
+   const[isready, setIsReady] = useState(false);
 
   const termo = busca.toLowerCase().trim();
   
@@ -20,22 +21,25 @@ export default function Todo (){
   const handleSubmit = (e) =>
     {
       e.preventDefault();
-      console.log(tarefa.valor, categoria.valor)
-  
 
-      if(tarefa.valor.trim() === '' || categoria.valor === ''){
-        alert('Campo obrigatório')
+      if(tarefa.valor.trim() === '' || categoria.valor == ''){
+        console.log('Campo obrigatório')
+        console.log(categoria.valor)
         return
       }
 
-      const novaTarefa = {text: tarefa.valor, category: categoria.valor, concluida: false}
+      const novaTarefa = {text: tarefa.valor, category: categoria.valor, ready: false}
 
       setList([...list, novaTarefa])
       tarefa.clean();
 
-
+      
     }
-
+    
+    const checkReady = (indexReady) =>{
+      setList(prev => prev.map((item, index) => index === indexReady? {...item, ready: !item.ready}: item))
+    }
+    
     const remove = (indexRemove) => {
       setList(prev => prev.filter((_, index) => index !== indexRemove))
     }
@@ -47,6 +51,8 @@ export default function Todo (){
         
 
     })
+
+    
 
   return(
     <div className="flex flex-col w-full m-2 justify-center items-center border-2 rounded-md bg-white">
@@ -74,7 +80,7 @@ export default function Todo (){
             <div className="p-4 w-96 h-80 border-solid border-2 border-black rounded-lg overflow-y-auto">
               <ul className="flex flex-col items-center">
                 {listaFiltrada.map((item, index) =>(
-                  <Tarefa key={index} text={item.text} category={categoria.valor} onDelete={()=> remove(index)}/>
+                  <Tarefa key={index} text={item.text} category={item.category} onDelete={()=> remove(index)} ready={item.ready} onReady={() => checkReady(index)}/>
                 ))}
               </ul>
             </div>
