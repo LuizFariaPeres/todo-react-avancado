@@ -10,7 +10,7 @@ export default function Todo (){
   const[list, setList] = useState([]);
   const[busca, setBusca] = useState('');
   const tarefa = useInput();
-  const categoria = useInput("")
+  const categoria = useInput("");
   const{user} = useContext(UseContext)
 
   const termo = busca.toLowerCase().trim();
@@ -48,15 +48,9 @@ export default function Todo (){
 
     })
 
-    const click = ()=>
-    {
-      Tarefa.pronta = true;
-    }
-
-
   return(
     <div className="flex flex-col w-full m-2 justify-center items-center border-2 rounded-md bg-white">
-        <h1 className="text-3xl font-bold">Hellow, {user.name}!</h1>
+        <h1 className="text-3xl font-bold">Olá, {user.name}!</h1>
         <Search busca={busca} setBusca={setBusca}/>
         
         
@@ -68,7 +62,7 @@ export default function Todo (){
             />
             <div className="grid w-full gap-4">
               <button type="submit" className="border-solid border-2 border-none rounded p-1 bg-gray-400">Adicionar</button>
-              <select name="Filtros" id="marcadas" value={categoria.valor} onChange={categoria.onChange}
+              <select value={categoria.valor} onChange={categoria.onChange}
               className="justify-self-end w-full rounded-md text-center bg-gray-400"
               >
                 <option value="Estudos">Estudos</option>
