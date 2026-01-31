@@ -11,6 +11,10 @@ function Login(){
     const handleSubmit = (e)=>{
         e.preventDefault();
         //validar
+        if(userName.valor.trim() === ''){
+            alert("Digita seu nome, Tchongo")
+            return
+        }
 
         //gravar
         //quando for feito a tentativa de gravação, username.valor refere-se a variavel valor do hook useInput,
