@@ -9,7 +9,7 @@ GitHub Desktop
 
 
 Instruções:
-Antes utilize o comando 'cd (noma da pasta)' para adentrar no arquivo 
+Antes utilize o comando 'cd (nome da pasta)' para adentrar no arquivo 
 Após de o comando "npm run dev" para o arquivo abrir um local host 
 Utilize Ctrl+click no link gerado 'http://localhost:PortaDoSeuPc/'
 
