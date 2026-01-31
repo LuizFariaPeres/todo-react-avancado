@@ -11,6 +11,7 @@ export default function Todo (){
   const[busca, setBusca] = useState('');
   const tarefa = useInput();
   const categoria = useInput("Estudos");
+  const select = useInput('')
   const{user} = useContext(UseContext)
    const[isready, setIsReady] = useState(false);
 
@@ -46,6 +47,15 @@ export default function Todo (){
 
     const listaFiltrada = list.filter((i) =>{
         const filtroTexto = i.text.toLowerCase().includes(termo) || i.category.toLowerCase().includes(termo);
+
+        if(select.valor === "concluida"){
+          return filtroTexto && i.ready
+        }
+        if(select.valor === "pendentes"){
+          return filtroTexto && !i.ready
+        }
+
+
       return filtroTexto
           
         
@@ -58,6 +68,12 @@ export default function Todo (){
     <div className="flex flex-col w-full m-2 justify-center items-center border-2 rounded-md bg-white">
         <h1 className="text-3xl font-bold">Olá, {user.name}!</h1>
         <Search busca={busca} setBusca={setBusca}/>
+        <select value={select.valor} onChange={select.onChange}
+        className="justify-self-end w-30 rounded-md text-center bg-gray-400">
+          <option value="todas">Todas</option>
+          <option value="concluida">Concluido</option>
+          <option value="pendentes">Pendentes</option>
+        </select>
         
         
           <form className="flex flex-col m-2 gap-6 p-5" onSubmit={handleSubmit}>
