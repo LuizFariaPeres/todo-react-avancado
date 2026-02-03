@@ -12,7 +12,7 @@ function Login(){
         e.preventDefault();
         //validar
         if(userName.valor.trim() === ''){
-            alert("Digita seu nome, Tchongo")
+            alert("Digite seu nome de usuario")
             return
         }
 
