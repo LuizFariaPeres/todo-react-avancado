@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import useInput from "../hooks/useInput";
-import { UseContext } from "../Context/UseContext";
+import {Context} from "../Context/UseContext";
 
 
 
 function Login(){
     const userName = useInput();
-    const {setUser} = useContext(UseContext);
+    const {setUser} = useContext(Context);
 
     const handleSubmit = (e)=>{
         e.preventDefault();

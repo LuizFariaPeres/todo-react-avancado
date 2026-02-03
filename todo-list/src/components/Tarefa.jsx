@@ -1,11 +1,8 @@
-import { memo, useState } from "react"
+import {memo} from "react"
 
 
 function Tarefa({text, category, onDelete, ready, onReady}){
    
-
-
-
     return(
     <div className="flex flex-col m-4 bg-white p-3 rounded-md">
         <div className="flex items-center  gap-7">

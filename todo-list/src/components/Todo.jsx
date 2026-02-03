@@ -1,91 +1,94 @@
-import {useContext, useState } from "react"
+import {useCallback, useContext, useMemo, useState } from "react"
 import Tarefa from "./Tarefa"
 import useInput from "../hooks/useInput"
 import Search from "./Search"
-import { UseContext } from "../Context/UseContext";
+import {Context} from "../Context/UseContext";
 
 export default function Todo (){
 
 
   const[list, setList] = useState([]);
   const[busca, setBusca] = useState('');
-  const tarefa = useInput();
-  const categoria = useInput("Estudos");
-  const select = useInput('')
-  const{user} = useContext(UseContext)
-   const[isready, setIsReady] = useState(false);
-
+  const taskInput = useInput();
+  const categoryInput = useInput("Estudos");
+  const selectInput = useInput('')
+  const{user} = useContext(Context)
   const termo = busca.toLowerCase().trim();
   
 
   
-  const handleSubmit = (e) =>
+  const handleSubmit = useCallback((e) =>
     {
       e.preventDefault();
 
-      if(tarefa.valor.trim() === '' || categoria.valor == ''){
+      if(taskInput.valor.trim() === '' || categoryInput.valor == ''){
         console.log('Campo obrigatório')
-        console.log(categoria.valor)
+        console.log(categoryInput.valor)
         return
       }
 
-      const novaTarefa = {text: tarefa.valor, category: categoria.valor, ready: false}
+      const newTask = {text: taskInput.valor, category: categoryInput.valor, ready: false}
 
-      setList([...list, novaTarefa])
-      tarefa.clean();
+      setList([...list, newTask])
+      taskInput.clean();
 
       
     }
-    
-    const checkReady = (indexReady) =>{
-      setList(prev => prev.map((item, index) => index === indexReady? {...item, ready: !item.ready}: item))
-    }
-    
-    const remove = (indexRemove) => {
-      setList(prev => prev.filter((_, index) => index !== indexRemove))
-    }
-
-    const listaFiltrada = list.filter((i) =>{
-        const filtroTexto = i.text.toLowerCase().includes(termo) || i.category.toLowerCase().includes(termo);
-
-        if(select.valor === "concluida"){
-          return filtroTexto && i.ready
-        }
-        if(select.valor === "pendentes"){
-          return filtroTexto && !i.ready
-        }
+  ,[taskInput.valor, categoryInput.valor]
+)
 
 
-      return filtroTexto
-          
-        
 
-    })
+  const checkReady = (indexReady) =>{
+    setList(prev => prev.map((item, index) => index === indexReady? {...item, ready: !item.ready}: item))
+  }
+  
+  const remove = (indexRemove) => {
+    setList(prev => prev.filter((_, index) => index !== indexRemove))
+  }
+
+  const listFilter = useMemo(()=>{
+      return list.filter((i) =>
+        {
+          const filtroTexto = i.text.toLowerCase().includes(termo) || i.category.toLowerCase().includes(termo);
+
+          if(selectInput.valor === "concluida"){
+            return filtroTexto && i.ready
+          }
+          if(selectInput.valor === "pendentes"){
+            return filtroTexto && !i.ready
+          }
+
+
+        return filtroTexto
+      },
+      [list, termo, selectInput.valor, categoryInput.valor]) 
+  })
 
     
 
   return(
-    <div className="flex flex-col w-full m-2 justify-center items-center border-2 rounded-md bg-white">
+    <div className="flex flex-col w-full mx-2 justify-center items-center border-2 rounded-md bg-white">
         <h1 className="text-3xl font-bold">Olá, {user.name}!</h1>
         <Search busca={busca} setBusca={setBusca}/>
-        <select value={select.valor} onChange={select.onChange}
-        className="justify-self-end w-30 rounded-md text-center bg-gray-400">
+        <select value={selectInput.valor} onChange={selectInput.onChange}
+        className="justify-self-center rounded-md p-1.5 text-center bg-gray-400">
           <option value="todas">Todas</option>
           <option value="concluida">Concluido</option>
           <option value="pendentes">Pendentes</option>
         </select>
         
         
-          <form className="flex flex-col m-2 gap-6 p-5" onSubmit={handleSubmit}>
+          <form className="w-full flex flex-col m-2  gap-6 p-5" onSubmit={handleSubmit}>
             <input type="text" placeholder="Digite sua Tarefa"
-            className="border-solid border-2 border-black rounded p-1.5"
-            value={tarefa.valor}
-            onChange={tarefa.onChange}
+            className="w-full text-center border-2 border-black rounded p-1.5"
+            value={taskInput.valor}
+            onChange={taskInput.onChange}
             />
             <div className="grid w-full gap-4">
-              <button type="submit" className="border-solid border-2 border-none rounded p-1 bg-gray-400">Adicionar</button>
-              <select value={categoria.valor} onChange={categoria.onChange}
-              className="justify-self-end w-full rounded-md text-center bg-gray-400"
+              <button type="submit" className="w-full  rounded p-1 bg-gray-400">Adicionar</button>
+              <select value={categoryInput.valor} onChange={categoryInput.onChange}
+              className="justify-self-center rounded-md p-1.5 text-center bg-gray-400"
               >
                 <option value="Estudos">Estudos</option>
                 <option value="Lazer">Lazer</option>
@@ -93,9 +96,9 @@ export default function Todo (){
               </select>
               
             </div>
-            <div className="p-4 w-96 h-80 border-solid border-2 border-black rounded-lg overflow-y-auto">
+            <div className="p-4 w-auto h-80 border-2 border-black rounded-lg overflow-y-auto">
               <ul className="flex flex-col items-center">
-                {listaFiltrada.map((item, index) =>(
+                {listFilter.map((item, index) =>(
                   <Tarefa key={index} text={item.text} category={item.category} onDelete={()=> remove(index)} ready={item.ready} onReady={() => checkReady(index)}/>
                 ))}
               </ul>
