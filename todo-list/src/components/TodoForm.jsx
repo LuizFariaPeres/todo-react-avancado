@@ -1,7 +1,7 @@
 import {useCallback, useContext, useMemo, useState } from "react"
-import Tarefa from "./Tarefa"
+import TodoTask from "./TodoTask"
 import useInput from "../hooks/useInput"
-import Search from "./Search"
+import TodoSearch from "./TodoSearch"
 import {Context} from "../Context/UseContext";
 
 export default function Todo (){
@@ -70,7 +70,7 @@ export default function Todo (){
   return(
     <div className="flex flex-col w-full mx-2 justify-center items-center border-2 rounded-md bg-white">
         <h1 className="text-3xl font-bold">Olá, {user.name}!</h1>
-        <Search busca={busca} setBusca={setBusca}/>
+        <TodoSearch busca={busca} setBusca={setBusca}/>
         <select value={selectInput.valor} onChange={selectInput.onChange}
         className="justify-self-center rounded-md p-1.5 text-center bg-gray-400">
           <option value="todas">Todas</option>
@@ -99,7 +99,7 @@ export default function Todo (){
             <div className="p-4 w-auto h-80 border-2 border-black rounded-lg overflow-y-auto">
               <ul className="flex flex-col items-center">
                 {listFilter.map((item, index) =>(
-                  <Tarefa key={index} text={item.text} category={item.category} onDelete={()=> remove(index)} ready={item.ready} onReady={() => checkReady(index)}/>
+                  <TodoTask key={index} text={item.text} category={item.category} onDelete={()=> remove(index)} ready={item.ready} onReady={() => checkReady(index)}/>
                 ))}
               </ul>
             </div>

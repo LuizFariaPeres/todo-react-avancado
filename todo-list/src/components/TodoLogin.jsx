@@ -4,7 +4,7 @@ import {Context} from "../Context/UseContext";
 
 
 
-function Login(){
+function TodoLogin(){
     const userName = useInput();
     const {setUser} = useContext(Context);
 
@@ -39,4 +39,4 @@ function Login(){
     )
 }
 
-export default Login;
+export default TodoLogin;

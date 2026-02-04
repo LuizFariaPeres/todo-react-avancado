@@ -1,6 +1,6 @@
 
 
-export default function Search ({busca, setBusca}){
+export default function TodoSearch ({busca, setBusca}){
 
 
     return(

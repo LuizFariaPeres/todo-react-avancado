@@ -1,7 +1,7 @@
 import {memo} from "react"
 
 
-function Tarefa({text, category, onDelete, ready, onReady}){
+function TodoTask({text, category, onDelete, ready, onReady}){
    
     return(
     <div className="flex flex-col m-4 bg-white p-3 rounded-md">
@@ -15,4 +15,4 @@ function Tarefa({text, category, onDelete, ready, onReady}){
     )
 }
 
-export default memo(Tarefa)
+export default memo(TodoTask)

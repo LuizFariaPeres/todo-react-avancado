@@ -1,7 +1,7 @@
-import Todo from "./components/Todo"
+import TodoForm from "./components/TodoForm"
 import { useState } from "react";
 import{Context} from './Context/UseContext'
-import Login from "./components/Login";
+import TodoLogin from "./components/TodoLogin";
 
 
 
@@ -14,7 +14,7 @@ export default function App (){
     return(
       <Context.Provider value = {{user, setUser}}>
         <div className="flex self-center">
-          {user.isLoggin ? <Todo/> : <Login/>}
+          {user.isLoggin ? <TodoForm/> : <TodoLogin/>}
         </div>   
     </Context.Provider>
     )
